@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Env / IDE
+.env
+.venv
+.vscode/
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# Outputs 
+results/
