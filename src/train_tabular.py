@@ -18,8 +18,10 @@ def train(
     os.makedirs(results_dir, exist_ok=True)
 
     env = make_taxi_env(seed=seed)
-    nS = env.observation_space.n
-    nA = env.action_space.n
+    nS = env.observation_space.n # 500
+    print(nS)
+    nA = env.action_space.n # 6
+    print(nA)
 
     agent = TabularQAgent(
         n_states=nS,
@@ -36,7 +38,9 @@ def train(
     q_path = os.path.join(results_dir, "tabular_q.npy")
 
     with open(log_path, "w", newline="", encoding="utf-8") as f:
+        # write
         writer = csv.writer(f)
+        # table header
         writer.writerow(["episode", "return", "length", "epsilon"])
 
         for ep in range(1, num_episodes + 1):
@@ -59,14 +63,12 @@ def train(
             agent.decay_eps()
             writer.writerow([ep, ep_return, steps, agent.epsilon])
 
-            # 每 500 回合打印一下，方便你看到在学
+            # print every 500 ep
             if ep % 500 == 0:
                 print(f"[Tabular] ep={ep} return={ep_return:.1f} len={steps} eps={agent.epsilon:.3f}")
 
     agent.save(q_path)
     env.close()
-    print(f"Saved log -> {log_path}")
-    print(f"Saved Q-table -> {q_path}")
 
 
 def main():
