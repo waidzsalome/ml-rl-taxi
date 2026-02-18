@@ -41,12 +41,34 @@ $$
 
 #### algorithm
 
+### DQN
+
+#### update
+
+#### choosing action
+
+#### algorithm
+
 ## the experimental results
 
 ### Tabular Q-Learning
 
 #### Learning curve
 
-#### Summary
+#### different eposides
+
+#### different lr
+
+#### different gamma
+
+### DQN
+
+### learning curve
+
+### comparation Tabular-Q Learning and DQN
 
 ## the architecture of the implementation.
+
+### Tabular
+
+### DQN
