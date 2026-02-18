@@ -6,7 +6,7 @@ from src.agents.tabular_q import TabularQAgent
 
 def train(
     seed: int = 42,
-    num_episodes: int = 2000,
+    num_episodes: int = 20000,
     max_steps: int = 200,
     alpha: float = 0.1,
     gamma: float = 0.99,
