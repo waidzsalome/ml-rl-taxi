@@ -13,14 +13,40 @@ The problem addressed in this project consists in training a reinforcement learn
 deterministic
 MDP
 
-action space
-state space
+action space 6
+state space 500
 reward
 
 ## the solution adopted
 
 ### Tabular Q-Learning
 
+#### update
+
+$$
+Q(s, a) = r(s, a) + \gamma \max_{a' \in A} Q(\delta(s, a), a')
+$$
+
+add temporal difference, with lamda=0,and learning rate
+
+$$
+\hat{Q}(s, a) \leftarrow (1-\alpha)\hat{Q}(s, a) + \alpha [r + \gamma \max_{a'} \hat{Q}(s', a')]
+$$
+
+$$
+\hat{Q}(s,a) \leftarrow \hat{Q}(s,a)+ \underbrace{\alpha}_{\text{learning rate}} \Big[\underbrace{r + \overbrace{\gamma}^{\text{discount factor}}\max_{a'} \hat{Q}(s',a')}_{\text{TD target}}- \hat{Q}(s,a)\Big]
+$$
+
+#### choosing action, greedy
+
+#### algorithm
+
 ## the experimental results
+
+### Tabular Q-Learning
+
+#### Learning curve
+
+#### Summary
 
 ## the architecture of the implementation.

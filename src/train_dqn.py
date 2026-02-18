@@ -55,8 +55,7 @@ def main():
     n_actions = env.action_space.n
 
     # ---- agent ----
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    agent = DQNAgent(n_states=n_states, n_actions=n_actions, device=device, cfg=cfg)
+    agent = DQNAgent(n_states=n_states, n_actions=n_actions, cfg=cfg)
 
     # ---- logging ----
     returns = []
@@ -71,7 +70,6 @@ def main():
         f.write(f"seed={seed}\n")
         for k, v in asdict(cfg).items():
             f.write(f"{k}={v}\n")
-        f.write(f"device={device}\n")
 
     # ---- training loop ----
     for ep in range(1, episodes + 1):

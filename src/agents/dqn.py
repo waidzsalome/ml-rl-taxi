@@ -11,12 +11,15 @@ import torch.optim as optim
 
 class ReplayBuffer:
     def __init__(self, capacity: int):
+        # inital vlaue is empty
+        # maxlen is capacity
         self.buffer = deque(maxlen=capacity)
 
     def push(self, s, a, r, s2, done):
         self.buffer.append((s, a, r, s2, done))
 
     def sample(self, batch_size: int):
+        # return a list
         batch = random.sample(self.buffer, batch_size)
         s, a, r, s2, done = zip(*batch)
         return (
@@ -39,6 +42,7 @@ class DQNNet(nn.Module):
     def __init__(self, n_states: int, n_actions: int, emb_dim: int = 64, hidden: int = 128):
         super().__init__()
         self.emb = nn.Embedding(n_states, emb_dim)
+        # two hidden layers
         self.mlp = nn.Sequential(
             nn.Linear(emb_dim, hidden),
             nn.ReLU(),
@@ -50,6 +54,7 @@ class DQNNet(nn.Module):
     def forward(self, state_ids: torch.Tensor) -> torch.Tensor:
         # state_ids: (B,) int64
         x = self.emb(state_ids)          # (B, emb_dim)
+        # output of a feedforward neural network
         q = self.mlp(x)                  # (B, n_actions)
         return q
 
@@ -57,7 +62,7 @@ class DQNNet(nn.Module):
 @dataclass
 class DQNConfig:
     gamma: float = 0.99
-    lr: float = 1e-3
+    lr: float = 1e-3 # 0.01
     batch_size: int = 64
     buffer_size: int = 50_000
     min_buffer: int = 2_000          # warm-up before training
@@ -69,13 +74,12 @@ class DQNConfig:
 
 
 class DQNAgent:
-    def __init__(self, n_states: int, n_actions: int, device: str = "cpu", cfg: DQNConfig = DQNConfig()):
+    def __init__(self, n_states: int, n_actions: int, cfg: DQNConfig = DQNConfig()):
         self.n_states = n_states
         self.n_actions = n_actions
         self.cfg = cfg
-        self.device = torch.device(device)
-
-        self.qnet = DQNNet(n_states, n_actions).to(self.device)
+        # self.qnet.forward(s)
+        self.qnet = DQNNet(n_states, n_actions)
         self.optim = optim.Adam(self.qnet.parameters(), lr=cfg.lr)
         self.buffer = ReplayBuffer(cfg.buffer_size)
 
@@ -92,7 +96,7 @@ class DQNAgent:
         if random.random() < eps:
             return random.randrange(self.n_actions)
 
-        s = torch.tensor([state], dtype=torch.long, device=self.device)
+        s = torch.tensor([state], dtype=torch.long)
         with torch.no_grad():
             q = self.qnet(s)  # (1, n_actions)
         return int(torch.argmax(q, dim=1).item())
@@ -102,30 +106,37 @@ class DQNAgent:
 
     def learn_step(self):
         cfg = self.cfg
+        # if expience is too little
         if len(self.buffer) < cfg.min_buffer:
             return None
 
         if self.total_steps % cfg.train_every != 0:
             return None
 
+        # s.shape=s2.shape=(B,)
         s, a, r, s2, done = self.buffer.sample(cfg.batch_size)
 
-        s = torch.tensor(s, dtype=torch.long, device=self.device)
-        a = torch.tensor(a, dtype=torch.long, device=self.device)
-        r = torch.tensor(r, dtype=torch.float32, device=self.device)
-        s2 = torch.tensor(s2, dtype=torch.long, device=self.device)
-        done = torch.tensor(done, dtype=torch.float32, device=self.device)
+        s = torch.tensor(s, dtype=torch.long)
+        a = torch.tensor(a, dtype=torch.long)
+        r = torch.tensor(r, dtype=torch.float32)
+        s2 = torch.tensor(s2, dtype=torch.long)
+        done = torch.tensor(done, dtype=torch.float32)
 
-        # Q(s,a)
-        q_all = self.qnet(s)  # (B, A)
-        q_sa = q_all.gather(1, a.unsqueeze(1)).squeeze(1)  # (B,)
+        # Q(s,a) compute Q for every s in batch
+        q_all = self.qnet(s)  # (B64,A6)
+        # method gather(dim, index)
+        # unsqueeze(1),(B,1)
+        # gather(B,1)
+        # squeeze (B,)
+        q_sa = q_all.gather(1, a.unsqueeze(1)).squeeze(1) 
 
         # target: y = r + gamma * max_a' Q(s', a')
         # single NN: use same qnet, but NO grad through target
         with torch.no_grad():
-            q_next = self.qnet(s2)                 # (B, A)
-            max_q_next = q_next.max(dim=1).values  # (B,)
-            y = r + cfg.gamma * (1.0 - done) * max_q_next
+            q_next = self.qnet(s2)                 
+            max_q_next = q_next.max(dim=1).values  #（B,）
+            # target
+            y = r + cfg.gamma * (1.0 - done) * max_q_next #(B,)
 
         loss = nn.MSELoss()(q_sa, y)
 
@@ -133,8 +144,8 @@ class DQNAgent:
         loss.backward()
         if cfg.grad_clip is not None:
             nn.utils.clip_grad_norm_(self.qnet.parameters(), cfg.grad_clip)
+        # θ←θ−α⋅∇θ​J(θ)
         self.optim.step()
-
         return float(loss.item())
 
     def step(self):

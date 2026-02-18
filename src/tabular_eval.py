@@ -96,6 +96,16 @@ def evaluate(
         "q_path": q_path,
         "seed": seed,
     }
+    # Save summary to txt
+    summary_txt_path = os.path.join(results_dir, "tabular_eval_summary.txt")
+    with open(summary_txt_path, "w", encoding="utf-8") as f:
+        f.write("=== Evaluation Summary ===\n")
+        f.write(f"Episodes:      {num_episodes}\n")
+        f.write(f"Avg return:    {avg_return:.3f}\n")
+        f.write(f"Avg length:    {avg_len:.3f}\n")
+        f.write(f"Success rate:  {success_rate:.2%}\n")
+        f.write(f"Q-table path:  {q_path}\n")
+        f.write(f"Seed:          {seed}\n")
 
     # Save per-episode eval log (optional but useful)
     eval_log_path = os.path.join(results_dir, "tabular_eval.csv")
