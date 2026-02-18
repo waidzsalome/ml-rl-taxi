@@ -9,25 +9,6 @@ import torch
 from src.utils.env import make_taxi_env
 from src.agents.dqn import DQNAgent, DQNConfig
 
-
-def reset_env(env):
-    out = env.reset()
-    # gymnasium: (obs, info)
-    return out[0] if isinstance(out, tuple) else out
-
-
-def step_env(env, action: int):
-    out = env.step(action)
-    # gymnasium: (obs, reward, terminated, truncated, info)
-    if len(out) == 5:
-        s2, r, terminated, truncated, _ = out
-        done = bool(terminated or truncated)
-        return s2, float(r), done
-    # fallback old gym
-    s2, r, done, _ = out
-    return s2, float(r), bool(done)
-
-
 def main():
     # ---- hyperparams ----
     seed = 42
@@ -73,15 +54,20 @@ def main():
 
     # ---- training loop ----
     for ep in range(1, episodes + 1):
-        s = int(reset_env(env))
+        # s = int(reset_env(env))
+        s,_ = env.reset()
         ep_ret = 0.0
         ep_losses = []
+        done= False
+        steps=0
 
-        for _ in range(max_steps_per_ep):
+        # for _ in range(max_steps_per_ep):
+        while not done and steps< max_steps_per_ep:
             a = agent.act(s)  # epsilon-greedy inside
-            s2, r, done = step_env(env, a)
+            s2, r, terminated, truncated, _ =env.step(a);
+            done = terminated or truncated
 
-            agent.remember(s, a, r, int(s2), done)
+            agent.remember(s, a, float(r), int(s2), done)
 
             loss = agent.learn_step()
             if loss is not None:
@@ -89,11 +75,10 @@ def main():
 
             agent.step()  # increments total_steps for epsilon schedule
 
-            ep_ret += r
+            ep_ret += float(r)
             s = int(s2)
 
-            if done:
-                break
+            steps+=1
 
         returns.append(ep_ret)
         if len(ep_losses) > 0:
