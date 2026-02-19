@@ -1,4 +1,3 @@
-# eval_tabular.py
 import os
 import csv
 from typing import Optional

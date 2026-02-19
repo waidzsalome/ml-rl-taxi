@@ -1,4 +1,3 @@
-# src/train_dqn.py
 from __future__ import annotations
 
 import os

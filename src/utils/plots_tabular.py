@@ -49,7 +49,7 @@ def plot_learning_curve(
     plt.plot(episodes, returns_rm, label=f"Rolling mean (window={window})")
     plt.xlabel("Episode")
     plt.ylabel("Return")
-    plt.title("Tabular Q-learning: Learning Curve episodes=5000")
+    plt.title("Tabular Q-learning: Learning Curve")
     plt.legend()
     plt.tight_layout()
     plt.savefig(out_path, dpi=200)
