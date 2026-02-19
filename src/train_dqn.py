@@ -12,7 +12,7 @@ from src.agents.dqn import DQNAgent, DQNConfig
 def main():
     # ---- hyperparams ----
     seed = 42
-    episodes = 5000
+    episodes = 2000
     max_steps_per_ep = 200
 
     cfg = DQNConfig(
