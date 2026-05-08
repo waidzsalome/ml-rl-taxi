@@ -62,7 +62,7 @@ class DQNNet(nn.Module):
 @dataclass
 class DQNConfig:
     gamma: float = 0.99
-    lr: float = 1e-3 # 0.01
+    lr: float = 1e-3 # 0.001
     batch_size: int = 64
     buffer_size: int = 50_000
     min_buffer: int = 2_000          # warm-up before training
