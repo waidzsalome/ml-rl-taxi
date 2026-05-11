@@ -185,7 +185,7 @@ In Deep Q-Learning, the Q-function \( Q(s, a) \) still represents the expected r
 
   We use a single fully connected neural network, with 2 hidden layers. The architecture is as follows
   <p align="center">
-  <img src="./src/NN_architecture.png" width="550">
+  <img src="./src/assets/NN_architecture.png" width="550">
   </p>
 
   $$
@@ -212,7 +212,7 @@ In Deep Q-Learning, the Q-function \( Q(s, a) \) still represents the expected r
 The following figure shows the learning curve of Tabular Q-learning, with parameters `episodes = 10000` `α=0.1` `γ=0.99`. This setting is used as the baseline for comparison with different training configurations later.
 
 <p align="center">
-  <img src="./results/tabular_10000ep/tabular_learning_curve.png" width="350">
+  <img src="./src/assets/tabular_learning_curve_10000ep.png" width="350">
 </p>
 
 - The episode return increases rapidly during the early training phase.
@@ -238,8 +238,8 @@ It indicate that the learned policy consistently completes the task successfully
 The following figures compare the learning curves obtained with different numbers of training episodes. The baseline setting uses `episodes = 10000`, while the number of episodes is reduced to `episodes = 2000` for comparison. All other parameters remain unchanged.
 
 <div style="display:flex;justify-content:center; align-items:center; gap:20px;">
-  <img src="./results/tabular_10000ep/tabular_learning_curve.png" width="350">
-  <img src="./results/tabular_2000ep/tabular_learning_curve.png" width="350">
+   <img src="./src/assets/tabular_learning_curve_10000ep.png" width="350">
+  <img src="./src/assets/tabular_learning_curve_2000ep.png" width="350">
 </div>
 
 - With 10,000 episodes, the learning curve converges smoothly and remains stable.
@@ -282,8 +282,8 @@ The following figures compare the learning curves obtained with different learni
 The baseline setting uses `α = 0.1`, while the learning rate is increased to `α = 0.5` for comparison. All other parameters, including `episodes = 10000` and `γ = 0.99`, remain unchanged.
 
 <div style="display:flex;justify-content:center; align-items:center; gap:20px;">
-  <img src="./results/tabular_10000ep/tabular_learning_curve.png" width="350">
-  <img src="./results/tabular_0.5alpha/tabular_learning_curve.png" width="350">
+  <img src="./src/assets/tabular_learning_curve_10000ep.png" width="350">
+  <img src="./src/assets/tabular_learning_curve_05alpha.png" width="350">
 </div>
 
 - Compared to the baseline (`α = 0.1`), a larger learning rate (`α = 0.5`) reaches a stable return value in fewer episodes and maintains a relatively stable performance thereafter.
@@ -327,8 +327,8 @@ The following figures compare the learning curves obtained with different discou
 The baseline setting uses `γ = 0.99`, while the discount factor is reduced to `γ = 0.5` for comparison. All other parameters, including `episodes = 10000` and `α = 0.1`, remain unchanged.
 
 <div style="display:flex;justify-content:center; align-items:center; gap:20px;">
-  <img src="./results/tabular_10000ep/tabular_learning_curve.png" width="350">
-  <img src="./results/tabular_0.5gamma/tabular_learning_curve.png" width="350">
+  <img src="./src/assets/tabular_learning_curve_10000ep.png" width="350">
+  <img src="./src/assets/tabular_learning_curve_05gamma.png" width="350">
 </div>
 
 - With the baseline discount factor (γ = 0.99), the learning curve converges smoothly and remains stable faster.
@@ -371,10 +371,10 @@ Compared to the baseline, the evaluation shows a lower average return, longer ep
 
 #### Learning curve
 
-The following figure shows the learning curve of Tabular Q-learning, with parameters `episodes = 10000` `α=0.001` `γ=0.99`. This setting is used as the baseline for comparison with different training configurations later.
+The following figure shows the learning curve of Tabular Q-learning, with parameters `episodes = 5000` `α=0.001` `γ=0.99`. This setting is used as the baseline for comparison with different training configurations later.
 
 <p align="center">
-  <img src="./results/dqn_5000ep/dqn_learning_curve.png" width="350">
+  <img src="./src/assets/dqn_learning_curve_5000ep.png" width="350">
 </p>
 
 - The episode return increases rapidly during the early training phase, shows large fluctuations and very low values.
@@ -399,8 +399,8 @@ The results show that the learned policy is able to consistently complete the ta
 The following figures compare the learning curves of DQN trained with different numbers of episodes.The baseline setting uses `episodes = 5000`, while the number of training episodes is reduced to `episodes = 2000`. All other settings remain unchanged.
 
 <div style="display:flex;justify-content:center; align-items:center; gap:20px;">
-  <img src="./results/dqn_5000ep/dqn_learning_curve.png" width="350">
-  <img src="./results/dqn_2000ep/dqn_learning_curve.png" width="350">
+  <img src="./src/assets/dqn_learning_curve_5000ep.png" width="350">
+  <img src="./src/assets/dqn_learning_curve_2000ep.png" width="350">
 </div>
 
 - Reducing the number of training episodes does not significantly change the final average return of the DQN.
@@ -448,8 +448,8 @@ The following figures compare the learning curves of DQN trained with different 
 The baseline setting uses the learning rate`α = 0.001`, while the learning rate is increased to `α = 0.1`.
 
 <div style="display:flex;justify-content:center; align-items:center; gap:20px;">
-  <img src="./results/dqn_5000ep/dqn_learning_curve.png" width="350">
-  <img src="./results/dqn_0.1alpha/dqn_learning_curve.png" width="350">
+  <img src="./src/assets/dqn_learning_curve_5000ep.png" width="350">
+  <img src="./src/assets/dqn_learning_curve_01alpha.png" width="350">
 </div>
 
 - When the learning rate is increased to α = 0.1, the episode returns exhibit significantly larger fluctuations throughout the entire training process.
@@ -497,8 +497,8 @@ The baseline setting uses `γ = 0.99`, while the discount factor is reduced to `
 All other training settings remain unchanged.
 
 <div style="display:flex;justify-content:center; align-items:center; gap:20px;">
-  <img src="./results/dqn_5000ep/dqn_learning_curve.png" width="350">
-  <img src="./results/dqn_0.5gamma/dqn_learning_curve.png" width="350">
+  <img src="./src/assets/dqn_learning_curve_5000ep.png" width="350">
+  <img src="./src/assets/dqn_learning_curve_05gamma.png" width="350">
 </div>
 
 - When the discount factor is reduced to γ = 0.5, the rolling mean converges to a significantly lower return level, and episode returns continue to fluctuate in the later stages of training, resulting in overall performance that does not reach the level achieved with γ = 0.99.
@@ -542,8 +542,8 @@ All other training settings remain unchanged.
 The comparation between 2 methods:
 
 <div style="display:flex;justify-content:center; align-items:center; gap:20px;">
-  <img src="./results/dqn_5000ep/dqn_learning_curve.png" width="350">
-  <img src="./results/tabular_5000ep/tabular_learning_curve.png" width="350">
+  <img src="./src/assets/dqn_learning_curve_5000ep.png" width="350">
+  <img src="./src/assets/dqn_learning_curve_5000ep.png" width="350">
 </div>
 - DQN is more sensitive to hyperparameters
 <table>
